@@ -30,6 +30,7 @@ public static class MedicalCardExtensions
             PassportSeria = postMedicalCardDTO.PassportSeria,
             OMSPolicy = postMedicalCardDTO.OMSPolicy,
             PolyclinicId = postMedicalCardDTO.PolyclinicId,
+            Snils =postMedicalCardDTO.Snils,
             PatientId = postMedicalCardDTO.PatientId
         };
     }
@@ -43,5 +44,6 @@ public static class MedicalCardExtensions
         medicalCardEntity.OMSPolicy = putMedicalCardDTO.OMSPolicy;
         medicalCardEntity.PolyclinicId = putMedicalCardDTO.PolyclinicId;
         medicalCardEntity.PatientId = putMedicalCardDTO.PatientId;
+        medicalCardEntity.Snils = putMedicalCardDTO.Snils;
     } 
 }

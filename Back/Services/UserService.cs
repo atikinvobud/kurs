@@ -1,8 +1,10 @@
 using System.Threading.Tasks;
+using Back.Dtos;
 using Back.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Back.Services;
+
 public class UserService : IUserService
 {
     private readonly Context context;
@@ -20,10 +22,20 @@ public class UserService : IUserService
 
     public async Task<bool> Update(string Password, int Id)
     {
-        UserEntity? entity = await context.Users.FindAsync(Id);
-        if (entity == null) return false;
-        entity.Password = Password;
         await context.SaveChangesAsync();
         return true;
+    }
+
+    public async Task<GetUserDTO> GetPersonalInfo(int userId)
+    {
+        GetUserDTO? user = await context.Users.Where(u => u.Id == userId).Include(u => u.patientEntity)
+        .Select(u => new GetUserDTO()
+        {
+            Id = u.Id,
+            Fio = u.patientEntity!.FIO,
+            DateofBirth = u.DateOfBirth
+        }).FirstOrDefaultAsync();
+        if (user == null) return null!;
+        return user!;
     }
 }

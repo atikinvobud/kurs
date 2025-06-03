@@ -54,4 +54,17 @@ public class SickLeaveService : ISickLeaveService
         await context.SaveChangesAsync();
         return true;
     }
+
+    public async Task<List<GetShortSickLeaveDTO>> GetShorts(int Id)
+    {
+        List<int> ids  = await context.MedicalCards.Include(mc => mc.patientEntity).Where(mc => mc.patientEntity!.UserId == Id)
+        .Select(mc => mc.Id).ToListAsync();
+        List<SickLeaveEntity> entities = await context.SickLeaves.Where(sl => ids.Contains(sl.MedicalCardId) ).ToListAsync();
+        List<GetShortSickLeaveDTO> result = new List<GetShortSickLeaveDTO>();
+        foreach (var entity in entities)
+        {
+            result.Add(entity.ToShortDTO());
+        }
+        return result;
+    }
 }

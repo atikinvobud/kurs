@@ -7,6 +7,7 @@ public record MedicalCardEntity
     public required DateOnly DateOfEnd { get; set; }
     public required int PassportNumber { get; set; }
     public required int PassportSeria { get; set; }
+    public required string Snils { get; set; }
     public required string OMSPolicy { get; set; }
     public required int PolyclinicId { get; set; }
     public required int PatientId { get; set; }

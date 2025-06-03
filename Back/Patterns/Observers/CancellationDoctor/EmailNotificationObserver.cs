@@ -1,12 +1,12 @@
-using back.Services;
+using Back.Services;
 using Back.Models;
 
 namespace Back.Patterns;
 
 public class EmailNotificationObserver : IReceptionCancellationObserver
 {
-    private readonly EmailService emailService;
-    public EmailNotificationObserver(EmailService emailService)
+    private readonly IEmailService emailService;
+    public EmailNotificationObserver(IEmailService emailService)
     {
         this.emailService = emailService;
     }

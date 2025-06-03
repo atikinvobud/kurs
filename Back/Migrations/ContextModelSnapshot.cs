@@ -203,6 +203,10 @@ namespace Back.Migrations
                     b.Property<int>("PolyclinicId")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Snils")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PatientId");
@@ -300,8 +304,8 @@ namespace Back.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("DateOfAppointment")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("DateOfAppointment")
+                        .HasColumnType("date");
 
                     b.Property<int>("MedicalCardId")
                         .HasColumnType("integer");

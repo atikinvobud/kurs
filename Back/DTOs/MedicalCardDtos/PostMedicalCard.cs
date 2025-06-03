@@ -7,6 +7,7 @@ public class PostMedicalCardDTO
     public int PassportNumber { get; set; }
     public int PassportSeria { get; set; }
     public string OMSPolicy { get; set; } = null!;
+    public string Snils { get; set; } = null!;
     public int PolyclinicId { get; set; }
     public int PatientId { get; set; }
 }

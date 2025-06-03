@@ -18,7 +18,15 @@ public static class SickLeaveExtensions
             DoctorId = sickLeaveEntity.DoctorId,
         };
     }
-
+    public static GetShortSickLeaveDTO ToShortDTO(this SickLeaveEntity sickLeaveEntity)
+    {
+        return new()
+        {
+            Id = sickLeaveEntity.Id,
+            Length = sickLeaveEntity.Length,
+            StartDate = sickLeaveEntity.StartDate
+        };
+    }
     public static SickLeaveEntity ToEntity(this PostSickLeaveDTO postSickLeaveDTO)
     {
         return new()

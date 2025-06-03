@@ -14,22 +14,24 @@ public class MedicineService : IMedicineService
     {
         this.context = context;
     }
-    public async Task<List<GetMedicineDTO>> GetAll()
+    public async Task<List<GetMedicineDTO>> GetAll(int userId)
     {
-        List<MedicineEntity> entities = await context.Medicines.ToListAsync();
-        List<GetMedicineDTO> result = new List<GetMedicineDTO>();
-        foreach (var entity in entities)
+        List<int> ids = await context.MedicalCards.Include(mc => mc.patientEntity).Where(mc => mc.patientEntity!.UserId == userId)
+        .Select(mc => mc.Id).ToListAsync();
+       List<GetMedicineDTO> list = await context.Receptions.Where(mc => ids.Contains(mc.MedicalCardId))
+        .Include(r => r.receptionMedicineEntities).ThenInclude(rm => rm.medicineEntity)
+        .SelectMany(r => r.receptionMedicineEntities.Select(rm => new GetMedicineDTO
         {
-            result.Add(entity.ToDTO());
-        }
-        return result;
+            Id = rm.Id,
+            StartDate = r.DateOfAppointment,
+            Lehgth = r.length,
+            Name = rm.medicineEntity!.Name,
+            Dose = rm.medicineEntity!.Dose,
+            RulesOfTaking =rm.medicineEntity!.RulesOfTaking
+        })).ToListAsync();
+        return list;
     }
-    public async Task<GetMedicineDTO> GetById(int id)
-    {
-        MedicineEntity? entity = await context.Medicines.FindAsync(id);
-        if (entity == null) return null!;
-        return entity.ToDTO();
-    }
+
     public async Task<int> Create(PostMedicineDTO postMedicineDTO)
     {
         MedicineEntity entity = postMedicineDTO.ToEntity();

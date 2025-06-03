@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Back.Dtos;
 using Back.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -17,17 +18,9 @@ public class MedicineController : ControllerBase
      [HttpGet("")]
     public async Task<IActionResult> GetAll()
     {
-        return Ok(await medicineService.GetAll());
+       int UserId = int.Parse(User.FindFirstValue("userId")!);
+        return Ok(await medicineService.GetAll(UserId));
     }
-
-    [HttpGet("{Id}")]
-    public async Task<IActionResult> GetById([FromRoute] int Id)
-    {
-        GetMedicineDTO medicineDTO= await medicineService.GetById(Id);
-        if (medicineDTO == null) return NotFound();
-        return Ok(medicineDTO);
-    }
-
 
     [HttpPost("create")]
     public async Task<IActionResult> Create([FromBody] PostMedicineDTO postMedicineDTO)

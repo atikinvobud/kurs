@@ -1,0 +1,24 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+
+    "module": "ESNext",                     // важно для Vue 3 и ES модуля
+    "moduleResolution": "node",             // резолв модулей как у Node
+    "allowSyntheticDefaultImports": true,  // разрешаем импорт по умолчанию
+    "esModuleInterop": true,                // совместимость с CommonJS
+    "jsx": "preserve",                      // если планируешь JSX, иначе можно убрать
+    "baseUrl": ".",                         // базовый путь для путей
+    "paths": {
+      "@/*": ["src/*"]                      // алиас @ -> src
+    },
+    "types": ["vite/client"]                // если используешь vite, иначе можно убрать
+  },
+  "include": ["src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "src/**/*.d.ts"]
+}

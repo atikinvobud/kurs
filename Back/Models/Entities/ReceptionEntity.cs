@@ -4,7 +4,7 @@ public record ReceptionEntity
 {
     public int Id { get; set; }
     public required int MedicalCardId { get; set; }
-    public required DateTime DateOfAppointment { get; set; }
+    public required DateOnly DateOfAppointment { get; set; }
     public required TimeSpan length { get; set; }
 
     public MedicalCardEntity? medicalCardEntity { get; set; }

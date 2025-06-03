@@ -10,8 +10,8 @@ namespace Back.Services;
 public class AppointmentService : IAppointmentService
 {
     private readonly Context context;
-    private readonly ScheduleService scheduleService;
-    public AppointmentService(Context context, ScheduleService scheduleService)
+    private readonly IScheduleService scheduleService;
+    public AppointmentService(Context context, IScheduleService scheduleService)
     {
         this.context = context;
         this.scheduleService = scheduleService;
@@ -67,5 +67,21 @@ public class AppointmentService : IAppointmentService
         context.Appointments.Remove(entity);
         await context.SaveChangesAsync();
         return true;
+    }
+    public async Task<List<GetAppInfoDTO>> GetInfo(int userId)
+    {
+        List<int> ids = await context.MedicalCards.Include(mc => mc.patientEntity).Where(mc => mc.patientEntity!.UserId == userId)
+        .Select(mc => mc.Id).ToListAsync();
+
+        List<GetAppInfoDTO> list = await context.Appointments.Where(a => ids.Contains(a.MedicalCardId) && a.ConclusionId!=null).Include(a => a.scheduleEntity)
+        .ThenInclude(s => s!.doctorEntity).Include(a => a.conclusionEntity).Select(a => new GetAppInfoDTO()
+        { 
+            Id = a.Id,
+            DoctorFIO = a.scheduleEntity!.doctorEntity!.FIO,
+            Date = a.scheduleEntity!.Date,
+            Diagnos = a.conclusionEntity!.Diagnos,
+            Description = a.conclusionEntity!.Description
+        }).ToListAsync();
+        return list;
     }
 }

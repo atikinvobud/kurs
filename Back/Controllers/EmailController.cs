@@ -51,7 +51,7 @@ public class ResetPasswordController : ControllerBase
         UserEntity? user = await userService.FindUserByLogin(login);
         if (user == null) return NotFound();
 
-        user.Password = BCrypt.Net.BCrypt.EnhancedHashPassword(password);
+        user.Password = BCrypt.Net.BCrypt.HashPassword(password);
         await userService.Update(password,user.Id);
         return Ok();
     }

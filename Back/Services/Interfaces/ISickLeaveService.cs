@@ -8,5 +8,6 @@ public interface ISickLeaveService
     Task<bool> Extend(ExtendSickLeaveDTO extendSickLeaveDTO);
     Task<List<GetSickLeaveDTO>> GetAll();
     Task<GetSickLeaveDTO> GetById(int id);
+    Task<List<GetShortSickLeaveDTO>> GetShorts(int Id);
     Task<bool> Update(PutSickLeaveDTO putSickLeaveDTO);
 }

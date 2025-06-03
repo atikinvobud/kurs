@@ -53,4 +53,24 @@ public class MedicalCardService : IMedicalCardService
         await context.SaveChangesAsync();
         return true;
     }
+    public async Task<List<GettFullInfoDTO>> FullInfo(int userId)
+    {
+        List<int> ids = await context.MedicalCards.Include(mc => mc.patientEntity).ThenInclude(p => p!.userEntity)
+        .Where(mc => mc.patientEntity!.userEntity!.Id == userId).Select(mc => mc.PolyclinicId).ToListAsync();
+        List<GettFullInfoDTO> list = await context.Polyclinics.Where(p => ids.Contains(p.Id)).Include(p => p.medicalCardEntities)
+        .ThenInclude(mc => mc.sickLeaveEntities).ThenInclude(sl => sl.doctorEntity)
+        .SelectMany(p => p.medicalCardEntities.SelectMany(mc => mc.sickLeaveEntities.Select(sl => new GettFullInfoDTO()
+        {
+            PolyclinicId = p.Id,
+            Address = p.Address,
+            Passport = mc.PassportNumber.ToString() + mc.PassportSeria.ToString(),
+            Polis = mc.OMSPolicy,
+            Snils = mc.OMSPolicy,
+            StartDate = sl.StartDate,
+            Length = sl.Length,
+            Diagnos = sl.Diagnos,
+            DoctorFIO = sl.doctorEntity!.FIO
+        }))).ToListAsync();
+        return list;
+    }
 }

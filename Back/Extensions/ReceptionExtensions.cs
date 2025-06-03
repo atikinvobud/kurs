@@ -10,7 +10,7 @@ public static class ReceptionExtensions
         return new()
         {
             length = postReceptionDTO.Length,
-            DateOfAppointment = DateTime.UtcNow,
+            DateOfAppointment = DateOnly.FromDateTime(DateTime.Now),
             MedicalCardId = postReceptionDTO.MedicalCardId
         };
     }

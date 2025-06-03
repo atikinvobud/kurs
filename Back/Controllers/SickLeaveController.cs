@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Back.Dtos;
 using Back.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -27,6 +28,13 @@ public class SickLeaveController : ControllerBase
         return Ok(sickLeaveDTO);
     }
 
+    [HttpGet("shorts")]
+    public async Task<IActionResult> GetShorts()
+    {
+        int UserId = int.Parse(User.FindFirstValue("userId")!);
+        List<GetShortSickLeaveDTO> list = await sickLeaveService.GetShorts(UserId);
+        return Ok(list);
+    }
 
     [HttpPost("create")]
     public async Task<IActionResult> Create([FromBody] PostSickLeaveDTO postSickLeaveDTO)

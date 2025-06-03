@@ -3,6 +3,7 @@ using Back.Services;
 using System.Reflection.Metadata.Ecma335;
 using Back.Dtos;
 using Back.DTOs;
+using System.Security.Claims;
 namespace Back.Controllers;
 
 [ApiController]
@@ -14,20 +15,18 @@ public class MedicalCardController : ControllerBase
     {
         this.medicalCardService = medicalCardService;
     }
-
+    [HttpGet("FullInfo")]
+    public async Task<IActionResult> GetFull()
+    {
+        int UserId = int.Parse(User.FindFirstValue("userId")!);
+        return Ok(await medicalCardService.FullInfo(UserId));
+    }
     [HttpGet("")]
     public async Task<IActionResult> GetAll()
     {
         return Ok(await medicalCardService.GetAll());
     }
 
-    [HttpGet("{Id}")]
-    public async Task<IActionResult> GetById([FromRoute] int Id)
-    {
-        GetMedicalCardDTO medicalCardDTO = await medicalCardService.GetById(Id);
-        if (medicalCardDTO == null) return NotFound();
-        return Ok(medicalCardDTO);
-    }
 
     [HttpPost("create")]
     public async Task<IActionResult> Create([FromBody] PostMedicalCardDTO postMedicalCardDTO)

@@ -4,16 +4,7 @@ namespace Back.Dtos;
 
 public static class MedicineExtensions
 {
-    public static GetMedicineDTO ToDTO(this MedicineEntity medicineEntity)
-    {
-        return new()
-        {
-            Id = medicineEntity.Id,
-            Name = medicineEntity.Name,
-            Dose = medicineEntity.Dose,
-            RulesOfTaking = medicineEntity.RulesOfTaking
-        };
-    }
+
 
     public static MedicineEntity ToEntity(this PostMedicineDTO postMedicineDTO)
     {

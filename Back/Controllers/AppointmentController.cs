@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Back.Dtos;
 using Back.Patterns;
 using Back.Services;
@@ -29,6 +30,15 @@ public class AppointmentController : ControllerBase
         GetAppointmentDTO appointmentDTO = await appointmentService.GetById(Id);
         if (appointmentDTO == null) return NotFound();
         return Ok(appointmentDTO);
+    }
+
+    [HttpGet("history")]
+    public async Task<IActionResult> GetHistory()
+    {
+        int UserId = int.Parse(User.FindFirstValue("userId")!);
+        List<GetAppInfoDTO> list = await appointmentService.GetInfo(UserId);
+        if (list.Count == 0) return NotFound();
+        return Ok(list);
     }
 
     [HttpPost("create/{AppointmentId}")]

@@ -13,6 +13,18 @@ using MongoDB.Driver;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", policy =>
+    {
+        policy.WithOrigins("http://localhost:5173")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
 //DI контейнеры
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 builder.Services.AddScoped<IJwtService,JwtService>();
@@ -144,6 +156,8 @@ app.UseSwaggerUI(c =>
 app.UseHttpsRedirection();
 
 app.UseRouting();
+
+app.UseCors("AllowAll");
 
 //настройка авторизации
 app.UseAuthentication();
